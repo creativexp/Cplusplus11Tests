@@ -5,10 +5,13 @@
 #include <vector>
 #include <iostream>
 
+
+#include "OverrideFinalExample.h"
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//  intialiser list
-	std::vector<std::string> aNames = { "Paul", "Chad", "Tracy" };
+	std::vector<std::string> aNames = { "Name1", "Name2", "Name3" };
 
 	//  auto keyword
 	//  range-for statement
@@ -17,6 +20,12 @@ int _tmain(int argc, _TCHAR* argv[])
 			std::cout << c << std::endl;
 		}
 	}
+
+	//  nullptr
+	int* pIntPtr = nullptr; 
+	bool bTestBool = nullptr;  //  can be used on bools, translates to false
+	//  int iTestInt = nullptr;  //  error cant be used for integrals
+
 
 	return 0;
 }
