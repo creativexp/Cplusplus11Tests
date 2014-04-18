@@ -7,6 +7,7 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
+#include <memory>
 
 
 #include "OverrideFinalExample.h"
@@ -98,6 +99,24 @@ int _tmain(int argc, _TCHAR* argv[])
 		decltype(iVar) iVar2 = 0;  //  iVar2 will be type int
 
 	}
+
+	//  shared_ptr
+
+	//  Notes: created using two allocations 1) new int 2) shared_ptr<int>
+	//  could cause memory leak as the order of evaluation of parameters is unspecified in C++
+	std::shared_ptr<int> pSharedInt( new int(10) );
+
+	//  Notes: undefined behaviour. must use the copy or assign 
+	//  uncomment to cause crash
+	//  std::shared_ptr<int> pSharedIntUndef( pSharedInt.get() );
+	
+	//  ok
+	std::shared_ptr<int> pSharedDef( pSharedInt );
+	std::shared_ptr<int> pSharedDef2 = pSharedInt;
+
+	//  Notes: created using one memory allocation
+	std::shared_ptr<int> pSharedIntInt2 = std::make_shared<int>(10);
+
 
 	return 0;
 }
