@@ -8,9 +8,11 @@
 #include <functional>
 #include <algorithm>
 #include <memory>
+#include <cassert>
 
 
 #include "OverrideFinalExample.h"
+#include "SmartPointerTest.h"
 
 
 //  static assert
@@ -116,6 +118,42 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//  Notes: created using one memory allocation
 	std::shared_ptr<int> pSharedIntInt2 = std::make_shared<int>(10);
+
+
+
+	//  weak ptr
+
+	{
+
+		//  Cyclic Redundancy
+		//  this will leak memmory.
+		//  two shared pointer reference are made. 1) make_shared 2) within ->Set( 
+		//  the second shared ptr reference will not be uncounted leading 
+		//  to the CCyclicSmartPointerTest object not be deleted
+		//  ~CCyclicSmartPointerTest() will not get called
+		std::shared_ptr<CCyclicSharedPointerTest> pCycSmtPtr = std::make_shared<CCyclicSharedPointerTest>();
+		assert(pCycSmtPtr);
+		if (pCycSmtPtr) {
+			pCycSmtPtr->Set(pCycSmtPtr);
+		}
+
+		//  Raw pointer test. this will not leak memory 
+		CCyclicPointerTest* pCycPtr = new CCyclicPointerTest();
+		assert(pCycPtr);
+		if (pCycPtr) {
+			pCycPtr->Set(pCycPtr);
+			delete pCycPtr;
+		}
+
+		//  solution
+		//  use weak pointers
+		//  breaks strong cyclic reference
+		std::shared_ptr<CCyclicSharedPointerSolution> pCycSmtPtrSol = std::make_shared<CCyclicSharedPointerSolution>();
+		assert(pCycSmtPtrSol);
+		if (pCycSmtPtrSol) {
+			pCycSmtPtrSol->Set(pCycSmtPtrSol);
+		}
+	}
 
 
 	return 0;
