@@ -53,6 +53,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::sort(v.begin(), v.end(), [](int a, int b) { return abs(a)<abs(b); });
 	// now v should be { -10, 20, -30, 50 }
 
+	//  actual lamba return type
+	int iLambaInput = 50;
+	std::function<bool(int)> func1 = [](int iLambaInput){ return iLambaInput < 42; };
+	//  call the function
+	func1(iLambaInput);
+
+	//  easier way to write it
+	auto func2 = [](int iLambaInput){ return iLambaInput < 42; };
+	//  call the function
+	func2(iLambaInput);
 
 	//  raw string literals
 	//  Notes: easier way to add line breaks and 
@@ -127,7 +137,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		//  Cyclic Redundancy
 		//  this will leak memmory.
-		//  two shared pointer reference are made. 1) make_shared 2) within ->Set( 
+		//  two shared pointer references are made. 1) make_shared 2) within ->Set( 
 		//  the second shared ptr reference will not be uncounted leading 
 		//  to the CCyclicSmartPointerTest object not be deleted
 		//  ~CCyclicSmartPointerTest() will not get called
@@ -143,6 +153,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		if (pCycPtr) {
 			pCycPtr->Set(pCycPtr);
 			delete pCycPtr;
+			pCycPtr = 0;
 		}
 
 		//  solution
