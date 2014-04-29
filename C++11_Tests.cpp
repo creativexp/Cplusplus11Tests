@@ -165,7 +165,24 @@ int _tmain(int argc, _TCHAR* argv[])
 			pCycSmtPtrSol->Set(pCycSmtPtrSol);
 		}
 	}
+	
+	
+	//  empty unique pointer
+	std::unique_ptr<int> pUnique1 = nullptr;
 
+	//  new scope
+	{
+		//  unique pointer
+		std::unique_ptr<int> pUnique2(new int() );
+		assert( pUnique2 );
+		if (pUnique2) {
+			//  assign to external unique pointer
+			pUnique1 = std::move(pUnique2);
+		}
+	}
+
+	//  pUnique1 now owns the memory that was pointed to by pUnique2
+	//  pUnique1 will free memory when it leaves this scope
 
 	return 0;
 }
